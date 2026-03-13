@@ -4,7 +4,7 @@ import { getCategories, getProducts } from "@/sanity/lib/storefront";
 
 import { Metadata } from "next";
 export const metadata: Metadata = {
-  title: "Shop Page | NextCommerce Nextjs E-commerce template",
+  title: "Shop Page | Groza Shop",
   description: "This is Shop Page for NextCommerce Template",
   // other metadata
 };
