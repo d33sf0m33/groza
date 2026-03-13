@@ -1,4 +1,5 @@
-const fallbackProjectId = "demo";
+const fallbackProjectId = "etbmcohe";
+const fallbackDataset = "production";
 
 export const sanityProjectId =
   process.env.NEXT_PUBLIC_SANITY_PROJECT_ID ||
@@ -6,11 +7,10 @@ export const sanityProjectId =
   fallbackProjectId;
 
 export const sanityDataset =
-  process.env.NEXT_PUBLIC_SANITY_DATASET || process.env.SANITY_DATASET || "production";
+  process.env.NEXT_PUBLIC_SANITY_DATASET || process.env.SANITY_DATASET || fallbackDataset;
 
 export const sanityApiVersion = process.env.SANITY_API_VERSION || "2026-03-13";
 
 export const sanityToken = process.env.SANITY_API_TOKEN;
 
-export const isSanityConfigured =
-  sanityProjectId !== fallbackProjectId && Boolean(sanityDataset);
+export const isSanityConfigured = Boolean(sanityProjectId && sanityDataset);
