@@ -245,6 +245,20 @@ const siteSettings = {
   supportAddress: "685 Market Street, Las Vegas, LA 95820, United States.",
 };
 
+const company = {
+  _id: "company-groza-shop",
+  _type: "company",
+  name: "Groza Shop",
+  slug: "groza-shop",
+  primaryDomain: process.env.SANITY_PRIMARY_DOMAIN || "localhost",
+  domains: [
+    process.env.SANITY_PRIMARY_DOMAIN || "localhost",
+    "localhost",
+    "127.0.0.1",
+  ],
+  isDefault: true,
+};
+
 async function uploadImage(relativePath) {
   const filePath = path.join(rootDir, relativePath);
   const stream = fs.createReadStream(filePath);
@@ -263,7 +277,21 @@ async function seedSiteSettings() {
 
   await client.createOrReplace({
     ...siteSettings,
+    company: {
+      _type: "reference",
+      _ref: company._id,
+    },
     companyLogo: existingSiteSettings?.companyLogo,
+  });
+}
+
+async function seedCompany() {
+  await client.createOrReplace({
+    ...company,
+    slug: {
+      _type: "slug",
+      current: company.slug,
+    },
   });
 }
 
@@ -275,6 +303,10 @@ async function seedCategories() {
       _id: category.id,
       _type: "category",
       title: category.title,
+      company: {
+        _type: "reference",
+        _ref: company._id,
+      },
       slug: {
         _type: "slug",
         current: category.slug,
@@ -300,6 +332,10 @@ async function seedHeroSlides() {
       _id: slide.id,
       _type: "heroSlide",
       title: slide.title,
+      company: {
+        _type: "reference",
+        _ref: company._id,
+      },
       description: slide.description,
       saleOff: slide.saleOff,
       saleLabel: slide.saleLabel,
@@ -336,6 +372,10 @@ async function seedProducts() {
       _id: product.id,
       _type: "product",
       title: product.title,
+      company: {
+        _type: "reference",
+        _ref: company._id,
+      },
       slug: {
         _type: "slug",
         current: product.slug,
@@ -356,12 +396,14 @@ async function seedProducts() {
 
 async function main() {
   console.log(`Seeding Sanity project ${projectId}/${dataset}`);
+  await seedCompany();
   await seedSiteSettings();
   await seedCategories();
   await seedHeroSlides();
   await seedProducts();
   const counts = await client.fetch(
     `{
+      "companies": count(*[_type == "company"]),
       "siteSettings": count(*[_type == "siteSettings"]),
       "heroSlides": count(*[_type == "heroSlide"]),
       "categories": count(*[_type == "category"]),

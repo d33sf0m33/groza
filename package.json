@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "studio": "sanity dev",
-    "sanity:seed": "node --env-file=.env.local ./scripts/seed-sanity.mjs"
+    "sanity:seed": "node --env-file=.env.local ./scripts/seed-sanity.mjs",
+    "sanity:migrate:multi-company": "node --env-file=.env.local ./scripts/migrate-sanity-multi-company.mjs"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.6.1",

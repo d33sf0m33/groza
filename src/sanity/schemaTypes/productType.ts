@@ -12,6 +12,13 @@ export const productType = defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
+      name: "company",
+      title: "Company",
+      type: "reference" as const,
+      to: [{ type: "company" as const }],
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
       name: "slug",
       title: "Slug",
       type: "slug",
@@ -69,7 +76,7 @@ export const productType = defineType({
   preview: {
     select: {
       title: "title",
-      subtitle: "category.title",
+      subtitle: "company.name",
       media: "images.0",
     },
   },

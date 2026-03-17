@@ -12,6 +12,13 @@ export const heroSlideType = defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
+      name: "company",
+      title: "Company",
+      type: "reference" as const,
+      to: [{ type: "company" as const }],
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
       name: "description",
       title: "Description",
       type: "text",
@@ -57,7 +64,7 @@ export const heroSlideType = defineType({
     select: {
       title: "title",
       media: "image",
-      subtitle: "ctaLabel",
+      subtitle: "company.name",
     },
   },
 });

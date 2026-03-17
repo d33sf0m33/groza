@@ -12,6 +12,13 @@ export const siteSettingsType = defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
+      name: "company",
+      title: "Company",
+      type: "reference" as const,
+      to: [{ type: "company" as const }],
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
       name: "siteDescription",
       title: "Site description",
       type: "text",

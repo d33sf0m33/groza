@@ -12,6 +12,13 @@ export const categoryType = defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
+      name: "company",
+      title: "Company",
+      type: "reference" as const,
+      to: [{ type: "company" as const }],
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
       name: "slug",
       title: "Slug",
       type: "slug",
@@ -39,6 +46,7 @@ export const categoryType = defineType({
     select: {
       title: "title",
       media: "image",
+      subtitle: "company.name",
     },
   },
 });
