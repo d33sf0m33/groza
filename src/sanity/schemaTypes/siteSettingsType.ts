@@ -17,6 +17,15 @@ export const siteSettingsType = defineType({
       type: "text",
     }),
     defineField({
+      name: "companyLogo",
+      title: "Company logo",
+      type: "image",
+      options: {
+        hotspot: true,
+      },
+      description: "Displayed in the site header. Recommended transparent background.",
+    }),
+    defineField({
       name: "contactEmail",
       title: "Contact email",
       type: "string",

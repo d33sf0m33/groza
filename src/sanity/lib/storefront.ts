@@ -40,6 +40,16 @@ type SanityProduct = {
   images?: string[];
 };
 
+export type SiteSettings = {
+  siteTitle: string;
+  companyLogo?: string;
+};
+
+type SanitySiteSettings = {
+  siteTitle?: string;
+  companyLogo?: string;
+};
+
 type HomePageData = {
   categories: Category[];
   heroSlides: HeroSlide[];
@@ -77,6 +87,11 @@ const productsQuery = groq`*[_type == "product"] | order(coalesce(order, 9999) a
     "slug": slug.current
   },
   "images": images[].asset->url
+}`;
+
+const siteSettingsQuery = groq`*[_type == "siteSettings"][0]{
+  siteTitle,
+  "companyLogo": companyLogo.asset->url
 }`;
 
 function toCategory(category: SanityCategory, index: number): Category {
@@ -154,6 +169,18 @@ export async function getProducts(): Promise<Product[]> {
   }
 
   return products.map(toProduct);
+}
+
+export async function getSiteSettings(): Promise<SiteSettings> {
+  const siteSettings = await sanityFetch<SanitySiteSettings>({
+    query: siteSettingsQuery,
+    revalidate: 0,
+  });
+
+  return {
+    siteTitle: siteSettings?.siteTitle || "Groza Shop",
+    companyLogo: siteSettings?.companyLogo,
+  };
 }
 
 export async function getHomePageData(): Promise<HomePageData> {

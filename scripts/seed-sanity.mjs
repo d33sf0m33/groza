@@ -255,7 +255,15 @@ async function uploadImage(relativePath) {
 }
 
 async function seedSiteSettings() {
-  await client.createOrReplace(siteSettings);
+  const existingSiteSettings = await client.fetch(
+    `*[_type == "siteSettings" && _id == $id][0]`,
+    { id: siteSettings._id }
+  );
+
+  await client.createOrReplace({
+    ...siteSettings,
+    companyLogo: existingSiteSettings?.companyLogo,
+  });
 }
 
 async function seedCategories() {

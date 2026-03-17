@@ -8,12 +8,15 @@ import { useAppSelector } from "@/redux/store";
 import { useSelector } from "react-redux";
 import { selectTotalPrice } from "@/redux/features/cart-slice";
 import { useCartModalContext } from "@/app/context/CartSidebarModalContext";
-import Image from "next/image";
+import type { SiteSettings } from "@/sanity/lib/storefront";
 
 const Header = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [navigationOpen, setNavigationOpen] = useState(false);
   const [stickyMenu, setStickyMenu] = useState(false);
+  const [siteSettings, setSiteSettings] = useState<SiteSettings>({
+    siteTitle: "Groza Shop",
+  });
   const { openCartModal } = useCartModalContext();
 
   const product = useAppSelector((state) => state.cartReducer.items);
@@ -34,7 +37,44 @@ const Header = () => {
 
   useEffect(() => {
     window.addEventListener("scroll", handleStickyMenu);
-  });
+
+    return () => {
+      window.removeEventListener("scroll", handleStickyMenu);
+    };
+  }, []);
+
+  useEffect(() => {
+    const controller = new AbortController();
+
+    const loadSiteSettings = async () => {
+      try {
+        const response = await fetch("/api/site-settings", {
+          cache: "no-store",
+          signal: controller.signal,
+        });
+
+        if (!response.ok) {
+          return;
+        }
+
+        const data = (await response.json()) as SiteSettings;
+        setSiteSettings({
+          siteTitle: data.siteTitle || "Groza Shop",
+          companyLogo: data.companyLogo,
+        });
+      } catch (error) {
+        if ((error as Error).name !== "AbortError") {
+          console.error("Failed to load site settings", error);
+        }
+      }
+    };
+
+    loadSiteSettings();
+
+    return () => {
+      controller.abort();
+    };
+  }, []);
 
   const options = [
     { label: "All Categories", value: "0" },
@@ -46,6 +86,9 @@ const Header = () => {
     { label: "Mouse", value: "6" },
     { label: "Tablet", value: "7" },
   ];
+
+  const logoSrc = siteSettings.companyLogo || "/images/logo/logo.svg";
+  const logoAlt = `${siteSettings.siteTitle} logo`;
 
   return (
     <header
@@ -63,11 +106,12 @@ const Header = () => {
           {/* <!-- header top left --> */}
           <div className="xl:w-auto flex-col sm:flex-row w-full flex sm:justify-between sm:items-center gap-5 sm:gap-10">
             <Link className="flex-shrink-0" href="/">
-              <Image
-                src="/images/logo/logo.svg"
-                alt="Logo"
+              <img
+                src={logoSrc}
+                alt={logoAlt}
                 width={219}
                 height={36}
+                className="h-auto w-auto max-w-[219px]"
               />
             </Link>
 
