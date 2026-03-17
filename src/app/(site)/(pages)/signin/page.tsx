@@ -5,7 +5,6 @@ import { buildSiteMetadata } from "../../metadata";
 export async function generateMetadata() {
   return buildSiteMetadata({
     pageTitle: "Signin Page",
-    description: "Signin page",
   });
 }
 

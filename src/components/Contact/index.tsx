@@ -1,7 +1,8 @@
 import React from "react";
 import Breadcrumb from "../Common/Breadcrumb";
+import type { SiteSettings } from "@/sanity/lib/storefront";
 
-const Contact = () => {
+const Contact = ({ siteSettings }: { siteSettings: SiteSettings }) => {
   return (
     <>
       <Breadcrumb title={"Contact"} pages={["contact"]} />
@@ -33,7 +34,7 @@ const Contact = () => {
                         fill="#3C50E0"
                       />
                     </svg>
-                    Name: James Septimus
+                    Name: {siteSettings.siteTitle}
                   </p>
 
                   <p className="flex items-center gap-4">
@@ -61,7 +62,7 @@ const Contact = () => {
                         fill="#3C50E0"
                       />
                     </svg>
-                    Phone: 1234 567890
+                    Phone: {siteSettings.contactPhone}
                   </p>
 
                   <p className="flex gap-4">
@@ -80,7 +81,7 @@ const Contact = () => {
                         fill="#3C50E0"
                       />
                     </svg>
-                    Address: 7398 Smoke Ranch RoadLas Vegas, Nevada 89128
+                    Address: {siteSettings.supportAddress}
                   </p>
                 </div>
               </div>

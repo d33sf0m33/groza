@@ -6,7 +6,6 @@ import { buildSiteMetadata } from "../../metadata";
 export async function generateMetadata() {
   return buildSiteMetadata({
     pageTitle: "Shop Page",
-    description: "Shop page",
   });
 }
 

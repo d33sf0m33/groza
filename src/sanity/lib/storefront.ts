@@ -44,6 +44,7 @@ type SanityProduct = {
 
 export type SiteSettings = {
   siteTitle: string;
+  siteDescription?: string;
   companyLogo?: string;
   contactEmail?: string;
   contactPhone?: string;
@@ -52,6 +53,7 @@ export type SiteSettings = {
 
 type SanitySiteSettings = {
   siteTitle?: string;
+  siteDescription?: string;
   companyLogo?: string;
   contactEmail?: string;
   contactPhone?: string;
@@ -75,6 +77,7 @@ type Company = {
 
 export const DEFAULT_SITE_SETTINGS: SiteSettings = {
   siteTitle: "Groza Shop",
+  siteDescription: "Company website",
   contactEmail: "support@example.com",
   contactPhone: "(+099) 532-786-9843",
   supportAddress: "685 Market Street, Las Vegas, LA 95820, United States.",
@@ -151,6 +154,7 @@ const siteSettingsQuery = groq`*[
   company._ref == $companyId
 ][0]{
   siteTitle,
+  siteDescription,
   "companyLogo": companyLogo.asset->url,
   contactEmail,
   contactPhone,
@@ -320,6 +324,8 @@ export async function getSiteSettings(): Promise<SiteSettings> {
 
   return {
     siteTitle: siteSettings?.siteTitle || DEFAULT_SITE_SETTINGS.siteTitle,
+    siteDescription:
+      siteSettings?.siteDescription || DEFAULT_SITE_SETTINGS.siteDescription,
     companyLogo: siteSettings?.companyLogo,
     contactEmail: siteSettings?.contactEmail || DEFAULT_SITE_SETTINGS.contactEmail,
     contactPhone: siteSettings?.contactPhone || DEFAULT_SITE_SETTINGS.contactPhone,

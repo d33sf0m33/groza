@@ -3,7 +3,7 @@ import { Metadata } from "next";
 
 type BuildSiteMetadataOptions = {
   pageTitle?: string;
-  description: string;
+  description?: string;
 };
 
 export async function buildSiteMetadata({
@@ -12,9 +12,10 @@ export async function buildSiteMetadata({
 }: BuildSiteMetadataOptions): Promise<Metadata> {
   const siteSettings = await getSiteSettings();
   const siteTitle = siteSettings.siteTitle || "Groza Shop";
+  const siteDescription = description || siteSettings.siteDescription || "Company website";
 
   return {
     title: pageTitle ? `${pageTitle} | ${siteTitle}` : siteTitle,
-    description,
+    description: siteDescription,
   };
 }

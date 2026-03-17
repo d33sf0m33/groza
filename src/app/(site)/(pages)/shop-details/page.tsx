@@ -7,7 +7,6 @@ export const dynamic = "force-dynamic";
 export async function generateMetadata() {
   return buildSiteMetadata({
     pageTitle: "Shop Details Page",
-    description: "Shop details page",
   });
 }
 

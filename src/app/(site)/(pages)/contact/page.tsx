@@ -1,17 +1,19 @@
 import Contact from "@/components/Contact";
 import { buildSiteMetadata } from "../../metadata";
+import { getSiteSettings } from "@/sanity/lib/storefront";
 
 export async function generateMetadata() {
   return buildSiteMetadata({
     pageTitle: "Contact Page",
-    description: "Contact page",
   });
 }
 
-const ContactPage = () => {
+const ContactPage = async () => {
+  const siteSettings = await getSiteSettings();
+
   return (
     <main>
-      <Contact />
+      <Contact siteSettings={siteSettings} />
     </main>
   );
 };

@@ -3,9 +3,7 @@ import { getHomePageData } from "@/sanity/lib/storefront";
 import { buildSiteMetadata } from "./metadata";
 
 export async function generateMetadata() {
-  return buildSiteMetadata({
-    description: "Home page",
-  });
+  return buildSiteMetadata({});
 }
 
 export default async function HomePage() {
