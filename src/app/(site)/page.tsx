@@ -1,12 +1,12 @@
 import Home from "@/components/Home";
 import { getHomePageData } from "@/sanity/lib/storefront";
-import { Metadata } from "next";
+import { buildSiteMetadata } from "./metadata";
 
-export const metadata: Metadata = {
-  title: "Groza Shop",
-  description: "This is Home for NextCommerce Template",
-  // other metadata
-};
+export async function generateMetadata() {
+  return buildSiteMetadata({
+    description: "Home page",
+  });
+}
 
 export default async function HomePage() {
   const homePageData = await getHomePageData();

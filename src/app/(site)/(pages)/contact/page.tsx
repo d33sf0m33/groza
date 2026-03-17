@@ -1,11 +1,12 @@
 import Contact from "@/components/Contact";
+import { buildSiteMetadata } from "../../metadata";
 
-import { Metadata } from "next";
-export const metadata: Metadata = {
-  title: "Contact Page | Groza Shop",
-  description: "This is Contact Page for NextCommerce Template",
-  // other metadata
-};
+export async function generateMetadata() {
+  return buildSiteMetadata({
+    pageTitle: "Contact Page",
+    description: "Contact page",
+  });
+}
 
 const ContactPage = () => {
   return (

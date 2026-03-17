@@ -1,12 +1,13 @@
 import React from "react";
 import Cart from "@/components/Cart";
+import { buildSiteMetadata } from "../../metadata";
 
-import { Metadata } from "next";
-export const metadata: Metadata = {
-  title: "Cart Page | Groza Shop",
-  description: "This is Cart Page for NextCommerce Template",
-  // other metadata
-};
+export async function generateMetadata() {
+  return buildSiteMetadata({
+    pageTitle: "Cart Page",
+    description: "Cart page",
+  });
+}
 
 const CartPage = () => {
   return (

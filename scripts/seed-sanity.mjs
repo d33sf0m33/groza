@@ -242,6 +242,7 @@ const siteSettings = {
   siteDescription: "Visual storefront powered by Next.js and Sanity.",
   contactEmail: "hello@groza.shop",
   contactPhone: "+7 (000) 000-00-00",
+  supportAddress: "685 Market Street, Las Vegas, LA 95820, United States.",
 };
 
 async function uploadImage(relativePath) {

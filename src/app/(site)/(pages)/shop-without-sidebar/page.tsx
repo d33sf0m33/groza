@@ -1,13 +1,14 @@
 import React from "react";
 import ShopWithoutSidebar from "@/components/ShopWithoutSidebar";
 import { getProducts } from "@/sanity/lib/storefront";
+import { buildSiteMetadata } from "../../metadata";
 
-import { Metadata } from "next";
-export const metadata: Metadata = {
-  title: "Shop Page | Groza Shop",
-  description: "This is Shop Page for NextCommerce Template",
-  // other metadata
-};
+export async function generateMetadata() {
+  return buildSiteMetadata({
+    pageTitle: "Shop Page",
+    description: "Shop page",
+  });
+}
 
 const ShopWithoutSidebarPage = async () => {
   const products = await getProducts();

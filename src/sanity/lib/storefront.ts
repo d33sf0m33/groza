@@ -43,17 +43,30 @@ type SanityProduct = {
 export type SiteSettings = {
   siteTitle: string;
   companyLogo?: string;
+  contactEmail?: string;
+  contactPhone?: string;
+  supportAddress?: string;
 };
 
 type SanitySiteSettings = {
   siteTitle?: string;
   companyLogo?: string;
+  contactEmail?: string;
+  contactPhone?: string;
+  supportAddress?: string;
 };
 
 type HomePageData = {
   categories: Category[];
   heroSlides: HeroSlide[];
   products: Product[];
+};
+
+export const DEFAULT_SITE_SETTINGS: SiteSettings = {
+  siteTitle: "Groza Shop",
+  contactEmail: "support@example.com",
+  contactPhone: "(+099) 532-786-9843",
+  supportAddress: "685 Market Street, Las Vegas, LA 95820, United States.",
 };
 
 const categoriesQuery = groq`*[_type == "category"] | order(coalesce(order, 9999) asc, title asc){
@@ -91,7 +104,10 @@ const productsQuery = groq`*[_type == "product"] | order(coalesce(order, 9999) a
 
 const siteSettingsQuery = groq`*[_type == "siteSettings"][0]{
   siteTitle,
-  "companyLogo": companyLogo.asset->url
+  "companyLogo": companyLogo.asset->url,
+  contactEmail,
+  contactPhone,
+  supportAddress
 }`;
 
 function toCategory(category: SanityCategory, index: number): Category {
@@ -178,8 +194,12 @@ export async function getSiteSettings(): Promise<SiteSettings> {
   });
 
   return {
-    siteTitle: siteSettings?.siteTitle || "Groza Shop",
+    siteTitle: siteSettings?.siteTitle || DEFAULT_SITE_SETTINGS.siteTitle,
     companyLogo: siteSettings?.companyLogo,
+    contactEmail: siteSettings?.contactEmail || DEFAULT_SITE_SETTINGS.contactEmail,
+    contactPhone: siteSettings?.contactPhone || DEFAULT_SITE_SETTINGS.contactPhone,
+    supportAddress:
+      siteSettings?.supportAddress || DEFAULT_SITE_SETTINGS.supportAddress,
   };
 }
 

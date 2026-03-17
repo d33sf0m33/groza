@@ -31,6 +31,11 @@ export const siteSettingsType = defineType({
       type: "string",
     }),
     defineField({
+      name: "supportAddress",
+      title: "Support address",
+      type: "text",
+    }),
+    defineField({
       name: "contactPhone",
       title: "Contact phone",
       type: "string",

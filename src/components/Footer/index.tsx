@@ -1,8 +1,13 @@
+"use client";
 import React from "react";
 import Image from "next/image";
+import type { SiteSettings } from "@/sanity/lib/storefront";
 
-const Footer = () => {
+const Footer = ({ siteSettings }: { siteSettings: SiteSettings }) => {
   const year = new Date().getFullYear();
+
+  const phoneHref = `tel:${(siteSettings.contactPhone || "").replace(/[^\d+]/g, "")}`;
+  const emailHref = `mailto:${siteSettings.contactEmail}`;
 
   return (
     <footer className="overflow-hidden">
@@ -32,11 +37,11 @@ const Footer = () => {
                     />
                   </svg>
                 </span>
-                685 Market Street,Las Vegas, LA 95820,United States.
+                {siteSettings.supportAddress}
               </li>
 
               <li>
-                <a href="#" className="flex items-center gap-4.5">
+                <a href={phoneHref} className="flex items-center gap-4.5">
                   <svg
                     width="24"
                     height="24"
@@ -61,12 +66,12 @@ const Footer = () => {
                       fill="#3C50E0"
                     />
                   </svg>
-                  (+099) 532-786-9843
+                  {siteSettings.contactPhone}
                 </a>
               </li>
 
               <li>
-                <a href="#" className="flex items-center gap-4.5">
+                <a href={emailHref} className="flex items-center gap-4.5">
                   <svg
                     width="24"
                     height="24"
@@ -81,7 +86,7 @@ const Footer = () => {
                       fill="#3C50E0"
                     />
                   </svg>
-                  support@example.com
+                  {siteSettings.contactEmail}
                 </a>
               </li>
             </ul>

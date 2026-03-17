@@ -1,12 +1,13 @@
 import React from "react";
 import Checkout from "@/components/Checkout";
+import { buildSiteMetadata } from "../../metadata";
 
-import { Metadata } from "next";
-export const metadata: Metadata = {
-  title: "Checkout Page | Groza Shop",
-  description: "This is Checkout Page for NextCommerce Template",
-  // other metadata
-};
+export async function generateMetadata() {
+  return buildSiteMetadata({
+    pageTitle: "Checkout Page",
+    description: "Checkout page",
+  });
+}
 
 const CheckoutPage = () => {
   return (

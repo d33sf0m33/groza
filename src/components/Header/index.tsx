@@ -10,13 +10,10 @@ import { selectTotalPrice } from "@/redux/features/cart-slice";
 import { useCartModalContext } from "@/app/context/CartSidebarModalContext";
 import type { SiteSettings } from "@/sanity/lib/storefront";
 
-const Header = () => {
+const Header = ({ siteSettings }: { siteSettings: SiteSettings }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [navigationOpen, setNavigationOpen] = useState(false);
   const [stickyMenu, setStickyMenu] = useState(false);
-  const [siteSettings, setSiteSettings] = useState<SiteSettings>({
-    siteTitle: "Groza Shop",
-  });
   const { openCartModal } = useCartModalContext();
 
   const product = useAppSelector((state) => state.cartReducer.items);
@@ -40,39 +37,6 @@ const Header = () => {
 
     return () => {
       window.removeEventListener("scroll", handleStickyMenu);
-    };
-  }, []);
-
-  useEffect(() => {
-    const controller = new AbortController();
-
-    const loadSiteSettings = async () => {
-      try {
-        const response = await fetch("/api/site-settings", {
-          cache: "no-store",
-          signal: controller.signal,
-        });
-
-        if (!response.ok) {
-          return;
-        }
-
-        const data = (await response.json()) as SiteSettings;
-        setSiteSettings({
-          siteTitle: data.siteTitle || "Groza Shop",
-          companyLogo: data.companyLogo,
-        });
-      } catch (error) {
-        if ((error as Error).name !== "AbortError") {
-          console.error("Failed to load site settings", error);
-        }
-      }
-    };
-
-    loadSiteSettings();
-
-    return () => {
-      controller.abort();
     };
   }, []);
 
@@ -192,7 +156,7 @@ const Header = () => {
                   24/7 SUPPORT
                 </span>
                 <p className="font-medium text-custom-sm text-dark">
-                  (+965) 7492-3477
+                  {siteSettings.contactPhone}
                 </p>
               </div>
             </div>

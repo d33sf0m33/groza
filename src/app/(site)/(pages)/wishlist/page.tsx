@@ -1,12 +1,13 @@
 import React from "react";
 import { Wishlist } from "@/components/Wishlist";
-import { Metadata } from "next";
+import { buildSiteMetadata } from "../../metadata";
 
-export const metadata: Metadata = {
-  title: "Wishlist Page | Groza Shop",
-  description: "This is Wishlist Page for NextCommerce Template",
-  // other metadata
-};
+export async function generateMetadata() {
+  return buildSiteMetadata({
+    pageTitle: "Wishlist Page",
+    description: "Wishlist page",
+  });
+}
 
 const WishlistPage = () => {
   return (

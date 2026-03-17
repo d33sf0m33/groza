@@ -1,12 +1,15 @@
 import React from "react";
 import ShopDetails from "@/components/ShopDetails";
-import { Metadata } from "next";
+import { buildSiteMetadata } from "../../metadata";
 
-export const metadata: Metadata = {
-  title: "Shop Details Page | Groza Shop",
-  description: "This is Shop Details Page for NextCommerce Template",
-  // other metadata
-};
+export const dynamic = "force-dynamic";
+
+export async function generateMetadata() {
+  return buildSiteMetadata({
+    pageTitle: "Shop Details Page",
+    description: "Shop details page",
+  });
+}
 
 const ShopDetailsPage = () => {
   return (

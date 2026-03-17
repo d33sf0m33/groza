@@ -1,11 +1,13 @@
 import Signin from "@/components/Auth/Signin";
 import React from "react";
-import { Metadata } from "next";
-export const metadata: Metadata = {
-  title: "Signin Page | Groza Shop",
-  description: "This is Signin Page for NextCommerce Template",
-  // other metadata
-};
+import { buildSiteMetadata } from "../../metadata";
+
+export async function generateMetadata() {
+  return buildSiteMetadata({
+    pageTitle: "Signin Page",
+    description: "Signin page",
+  });
+}
 
 const SigninPage = () => {
   return (
