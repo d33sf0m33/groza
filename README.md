@@ -23,3 +23,7 @@ While NextMerce Pro features advanced functionalities, seamless integration, and
 #### [🚀 Live Demo](https://demo.nextmerce.com/)
 
 #### [🌐 Visit Website](https://nextmerce.com/)
+
+## Sanity integration
+
+Документация по текущей multi-company интеграции Sanity и правилам подключения данных компании лежит в [`docs/sanity-company-dataset.md`](/Users/katekrokhmall/Documents/projects/groza-shop/docs/sanity-company-dataset.md).

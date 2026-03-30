@@ -4,7 +4,6 @@ import Categories from "./Categories";
 import NewArrival from "./NewArrivals";
 import PromoBanner from "./PromoBanner";
 import BestSeller from "./BestSeller";
-import CounDown from "./Countdown";
 import Testimonials from "./Testimonials";
 import Newsletter from "../Common/Newsletter";
 import { Category } from "@/types/category";
@@ -25,7 +24,6 @@ const Home = ({ heroSlides, categories, products }: HomeProps) => {
       <NewArrival products={products} />
       <PromoBanner />
       <BestSeller products={products} />
-      <CounDown />
       <Testimonials />
       <Newsletter />
     </main>

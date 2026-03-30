@@ -5,7 +5,7 @@ import { schemaTypes } from "./src/sanity/schemaTypes";
 
 export default defineConfig({
   name: "default",
-  title: "Groza Shop CMS",
+  title: "Shop CMS",
   projectId: sanityProjectId,
   dataset: sanityDataset,
   basePath: "/studio",
