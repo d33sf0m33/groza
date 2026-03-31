@@ -2,10 +2,12 @@ import { groq } from "next-sanity";
 import { headers } from "next/headers";
 import { cache } from "react";
 import { demoCategories } from "@/components/Home/Categories/categoryData";
+import { demoHeroPromoCards } from "@/components/Home/Hero/heroPromoCards";
 import { demoHeroSlides } from "@/components/Home/Hero/heroSlides";
 import { demoProducts } from "@/components/Shop/shopData";
 import { sanityFetch } from "@/sanity/lib/client";
 import { Category } from "@/types/category";
+import { HeroPromoCard } from "@/types/heroPromoCard";
 import { HeroSlide } from "@/types/heroSlide";
 import { Product } from "@/types/product";
 
@@ -25,6 +27,17 @@ type SanityHeroSlide = {
   ctaLabel?: string;
   ctaHref?: string;
   image?: string;
+};
+
+type SanityHero = {
+  promoCards?: {
+    title?: string;
+    offerLabel?: string;
+    price?: string;
+    originalPrice?: string;
+    href?: string;
+    image?: string;
+  }[];
 };
 
 type SanityProduct = {
@@ -63,6 +76,7 @@ type SanitySiteSettings = {
 type HomePageData = {
   categories: Category[];
   heroSlides: HeroSlide[];
+  heroPromoCards: HeroPromoCard[];
   products: Product[];
 };
 
@@ -129,6 +143,20 @@ const heroSlidesQuery = groq`*[
   ctaLabel,
   ctaHref,
   "image": image.asset->url
+}`;
+
+const heroQuery = groq`*[
+  _type == "hero" &&
+  company._ref == $companyId
+][0]{
+  "promoCards": promoCards[]{
+    title,
+    offerLabel,
+    price,
+    originalPrice,
+    href,
+    "image": image.asset->url
+  }
 }`;
 
 const productsQuery = groq`*[
@@ -229,6 +257,22 @@ function toHeroSlide(slide: SanityHeroSlide, index: number): HeroSlide {
   };
 }
 
+function toHeroPromoCard(
+  card: NonNullable<SanityHero["promoCards"]>[number],
+  index: number,
+): HeroPromoCard {
+  const fallback = demoHeroPromoCards[index % demoHeroPromoCards.length];
+
+  return {
+    title: card.title || fallback.title,
+    offerLabel: card.offerLabel || fallback.offerLabel,
+    price: card.price || fallback.price,
+    originalPrice: card.originalPrice || fallback.originalPrice,
+    image: card.image || fallback.image,
+    href: card.href || fallback.href,
+  };
+}
+
 function toProduct(product: SanityProduct, index: number): Product {
   const fallback = demoProducts[index % demoProducts.length];
   const images = product.images?.filter(Boolean) || [];
@@ -290,6 +334,25 @@ export async function getHeroSlides(): Promise<HeroSlide[]> {
   return heroSlides.map(toHeroSlide);
 }
 
+export async function getHeroPromoCards(): Promise<HeroPromoCard[]> {
+  const currentCompany = await getCurrentCompany();
+
+  if (!currentCompany) {
+    return demoHeroPromoCards;
+  }
+
+  const hero = await sanityFetch<SanityHero>({
+    query: heroQuery,
+    params: { companyId: currentCompany._id },
+  });
+
+  if (!hero?.promoCards?.length) {
+    return demoHeroPromoCards;
+  }
+
+  return hero.promoCards.slice(0, 2).map(toHeroPromoCard);
+}
+
 export async function getProducts(): Promise<Product[]> {
   const currentCompany = await getCurrentCompany();
 
@@ -335,14 +398,16 @@ export async function getSiteSettings(): Promise<SiteSettings> {
 }
 
 export async function getHomePageData(): Promise<HomePageData> {
-  const [heroSlides, categories, products] = await Promise.all([
+  const [heroSlides, heroPromoCards, categories, products] = await Promise.all([
     getHeroSlides(),
+    getHeroPromoCards(),
     getCategories(),
     getProducts(),
   ]);
 
   return {
     heroSlides,
+    heroPromoCards,
     categories,
     products,
   };
